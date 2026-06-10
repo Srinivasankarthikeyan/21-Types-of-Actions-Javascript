@@ -23,6 +23,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install local action dependencies
+        run: npm ci
+        working-directory: ./.github/actions
+
       # Using the JavaScript Action locally
       - name: Analyze code
         id: analyze
