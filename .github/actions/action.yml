@@ -1,0 +1,21 @@
+name: 'JavaScript Action - Code Analyzer'
+description: 'A JavaScript action that analyzes code metrics and reports findings'
+inputs:
+  file-path:
+    description: 'Path to file or directory to analyze'
+    required: true
+    default: './'
+  report-format:
+    description: 'Format of report (json, markdown, text)'
+    required: false
+    default: 'markdown'
+outputs:
+  lines-of-code:
+    description: 'Total lines of code'
+  file-count:
+    description: 'Number of files analyzed'
+  report:
+    description: 'Analysis report'
+runs:
+  using: 'node20'
+  main: 'index.js'

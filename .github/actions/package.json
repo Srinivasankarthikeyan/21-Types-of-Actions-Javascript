@@ -1,0 +1,20 @@
+{
+  "name": "code-analyzer-action",
+  "version": "1.0.0",
+  "description": "A JavaScript action that analyzes code metrics",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "keywords": [
+    "github-actions",
+    "javascript",
+    "code-analysis"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.10.1",
+    "@actions/github": "^6.0.0"
+  }
+}

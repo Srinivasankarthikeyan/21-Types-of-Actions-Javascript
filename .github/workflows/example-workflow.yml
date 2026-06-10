@@ -1,0 +1,65 @@
+name: JavaScript Action Example
+
+on:
+  workflow_dispatch:
+    inputs:
+      analyze_path:
+        description: 'Directory or file path to analyze'
+        required: true
+        default: './'
+      report_format:
+        description: 'Report format (json, markdown, text)'
+        required: true
+        type: choice
+        options:
+          - json
+          - markdown
+          - text
+
+jobs:
+  analyze-code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Using the JavaScript Action locally
+      - name: Analyze code
+        id: analyze
+        uses: ./.github/actions/
+        with:
+          file-path: ${{ github.event.inputs.analyze_path }}
+          report-format: ${{ github.event.inputs.report_format }}
+
+      # Display outputs from the action
+      - name: Show analysis results
+        run: |
+          echo "📊 Code Analysis Results"
+          echo "========================"
+          echo "Files analyzed: ${{ steps.analyze.outputs.file-count }}"
+          echo "Lines of code: ${{ steps.analyze.outputs.lines-of-code }}"
+          echo ""
+          echo "📝 Report:"
+          echo "${{ steps.analyze.outputs.report }}"
+
+      # Save report as artifact
+      - name: Save report
+        run: |
+          echo "${{ steps.analyze.outputs.report }}" > code-analysis-report.txt
+
+      - name: Upload analysis report
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-analysis-report
+          path: code-analysis-report.txt
+
+      # Example: Use metrics in conditional
+      - name: Check code complexity
+        if: steps.analyze.outputs.lines-of-code > 500
+        run: |
+          echo "⚠️ Warning: Project has over 500 lines of code!"
+          echo "Consider refactoring or splitting into modules."
+
+      - name: Success notification
+        run: |
+          echo "✅ JavaScript action executed successfully!"
